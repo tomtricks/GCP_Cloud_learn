@@ -1,0 +1,73 @@
+Lab for how to - 
+  Create a storage bucket
+  Upload objects to the bucket
+  Create folders and subfolders in the bucket
+  Make objects in a storage bucket publicly accessible
+
+Set the region
+gcloud config set compute/region us-west1
+
+Task 1. Create a bucket
+Use the make bucket (mb) command to make a bucket, replacing <YOUR_BUCKET_NAME> with a unique name that follows the bucket naming rules:
+
+gsutil mb gs://<YOUR-BUCKET-NAME>
+
+Task 2. Upload an object into your bucket
+curl https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Ada_Lovelace_portrait.jpg/800px-Ada_Lovelace_portrait.jpg --output ada.jpg
+
+Note: To download an image from a URL using the curl command-line tool, The --output flag specifies the output file name.
+
+
+Use the gsutil cp command to upload the image from the location where you saved it to the bucket you created:
+gsutil cp ada.jpg gs://YOUR-BUCKET-NAME
+
+Note: cp stands for "copy"
+It stored an object in the bucket!
+
+Now remove the downloaded image:
+rm ada.jpg
+Note: rm stands for "remove" :)
+
+Task 3. Download an object from your bucket
+
+Use the gsutil cp command to download the image you stored in your bucket to Cloud Shell:
+gsutil cp -r gs://YOUR-BUCKET-NAME/ada.jpg
+
+Note: -r flag is used to copy directories or folders recursively.
+-r flag is used when you want to copy directories or folders and their contents. If you are copying a single file, you can omit the -r flag.
+
+Task 4. Copy an object to a folder in the bucket
+Use the gsutil cp command to create a folder called image-folder and copy the image (ada.jpg) into it:
+gsutil cp gs://YOUR-BUCKET-NAME/ada.jpg gs://YOUR-BUCKET-NAME/image-folder/
+
+
+Task 5. List contents of a bucket or folder
+Use the gsutil ls command to list the contents of the bucket:
+gsutil ls gs://YOUR-BUCKET-NAME
+
+Note: gsutil ls command is used to list the objects in a Google Cloud Storage bucket
+
+Task 6. List details for an object
+Use the gsutil ls command, with the -l flag to get some details about the image file you uploaded to your bucket:
+gsutil ls -l gs://YOUR-BUCKET-NAME/ada.jpg
+Note: By running this command, you can retrieve additional information about the ada.jpg file, such as its size, creation timestamp, and the object URL.
+
+Task 7. Make your object publicly accessible
+Use the gsutil acl ch command to grant all users read permission for the object stored in your bucket:
+gsutil acl ch -u AllUsers:R gs://YOUR-BUCKET-NAME/ada.jpg
+
+Note: acl command is used to change the access control list (ACL)
+      "ch" stands for "change"
+      The "-u" flag is used to specify the user or group for which the ACL is being modified
+      AllUsers:R: "AllUsers" is a predefined group in Google Cloud Storage that represents all users, including anonymous users. "R" stands for "read" access, which means that all users will have permission to read the specified file.
+
+Task 8. Remove public access
+To remove this permission, use the command:
+gsutil acl ch -d AllUsers gs://YOUR-BUCKET-NAME/ada.jpg
+
+Note: The "-d" flag is used with the gsutil acl ch command to delete or remove the specified entity from the ACL
+
+Delete objects
+Use the gsutil rm command to delete an object - the image file in your bucket:
+gsutil rm gs://YOUR-BUCKET-NAME/ada.jpg
+
